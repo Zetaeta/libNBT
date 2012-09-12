@@ -1,3 +1,1 @@
 My C++ library for Minecraft's NBT format.
-Currently only in early development, haven't even sorted out zlib for GZIP-ing files.
-It's probably terrible and memory-leaking, I are no good at C++ :P
