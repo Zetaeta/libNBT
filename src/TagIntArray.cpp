@@ -1,10 +1,15 @@
 
+#include <IOStream/InputStream.hpp>
+#include <IOStream/OutputStream.hpp>
+
 #include "TagIntArray.hpp"
 
 namespace NBT {
 
 using std::vector;
 using std::string;
+using IOStream::InputStream;
+using IOStream::OutputStream;
 
 TagIntArray::TagIntArray(const vector<int> &b, const string &name)
     :Tag(name), data(b) {}
@@ -15,7 +20,7 @@ TagIntArray::TagIntArray(const string &name)
 TagIntArray::TagIntArray(const vector<int> &b)
     :data(b) {}
 
-void TagIntArray::write(GZipOutputStream &out) const
+void TagIntArray::write(OutputStream &out) const
 {
     out << int(data.size());
     for (int i=0; i<data.size(); ++i) {
@@ -23,7 +28,7 @@ void TagIntArray::write(GZipOutputStream &out) const
     }
 }
 
-void TagIntArray::read(GZipInputStream &in)
+void TagIntArray::read(InputStream &in)
 {
     int size;
     in >> size;

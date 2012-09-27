@@ -1,9 +1,14 @@
 
+#include <IOStream/InputStream.hpp>
+#include <IOStream/OutputStream.hpp>
+
 #include "TagLong.hpp"
 
 namespace NBT {
 
 using std::string;
+using IOStream::InputStream;
+using IOStream::OutputStream;
 
 TagLong::TagLong(int64_t l, string name)
     :Tag(name), data(l) {}
@@ -14,12 +19,12 @@ TagLong::TagLong(int64_t l)
 TagLong::TagLong(string name)
     :Tag(name), data(0) {}
 
-void TagLong::write(GZipOutputStream &out) const
+void TagLong::write(OutputStream &out) const
 {
     out << data;
 }
 
-void TagLong::read(GZipInputStream &in)
+void TagLong::read(InputStream &in)
 {
     in >> data;
 }

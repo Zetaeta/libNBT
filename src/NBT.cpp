@@ -1,80 +1,100 @@
 
+#include <sstream>
+
+#include <IOStream/InputStream.hpp>
+#include <IOStream/OutputStream.hpp>
+#include <IOStream/GZipInputStream.hpp>
+#include <IOStream/GZipOutputStream.hpp>
+#include <IOStream/PlainInputStream.hpp>
+#include <IOStream/PlainOutputStream.hpp>
+
 #include "Tags.hpp"
-#include "GZipInputStream.hpp"
-#include "GZipOutputStream.hpp"
 #include "InvalidTagId.hpp"
+
+#define GZIP_MAGIC 0x1F8B
 
 namespace NBT {
 
 using std::string;
+using IOStream::InputStream;
+using IOStream::OutputStream;
+using IOStream::PlainInputStream;
+using IOStream::PlainOutputStream;
+using IOStream::GZipInputStream;
+using IOStream::GZipOutputStream;
+using IOStream::BIG;
 
-Tag & createTag(uint8_t type)
+Tag * createTag(uint8_t type)
 {
     switch (type)
     {
     case 0:
-        return *new TagEnd();
+        return new TagEnd();
     case 1:
-        return *new TagByte();
+        return new TagByte();
     case 2:
-        return *new TagShort();
+        return new TagShort();
     case 3:
-        return *new TagInt();
+        return new TagInt();
     case 4:
-        return *new TagLong();
+        return new TagLong();
     case 5:
-        return *new TagFloat();
+        return new TagFloat();
     case 6:
-        return *new TagDouble();
+        return new TagDouble();
     case 7:
-        return *new TagByteArray();
+        return new TagByteArray();
     case 8:
-        return *new TagString();
+        return new TagString();
     case 9:
-        return *new TagList();
+        return new TagList();
     case 10:
-        return *new TagCompound();
+        return new TagCompound();
     case 11:
-        return *new TagIntArray();
+        return new TagIntArray();
     default:
-        throw InvalidTagId("Type ID too high!");
+        std::ostringstream ss;
+        ss << "Type ID too high: " << int(type) << '!';
+        throw InvalidTagId(ss.str());
     }
 }
 
-Tag & createTag(uint8_t type, string name)
+Tag * createTag(uint8_t type, string name)
 {
     switch (type)
     {
     case 0:
-        return *new TagEnd();
+        return new TagEnd();
     case 1:
-        return *new TagByte(name);
+        return new TagByte(name);
     case 2:
-        return *new TagShort(name);
+        return new TagShort(name);
     case 3:
-        return *new TagInt(name);
+        return new TagInt(name);
     case 4:
-        return *new TagLong(name);
+        return new TagLong(name);
     case 5:
-        return *new TagFloat(name);
+        return new TagFloat(name);
     case 6:
-        return *new TagDouble(name);
+        return new TagDouble(name);
     case 7:
-        return *new TagByteArray(name);
+        return new TagByteArray(name);
     case 8:
-        return *new TagString(name);
+        return new TagString(name);
     case 9:
-        return *new TagList(name);
+        return new TagList(name);
     case 10:
-        return *new TagCompound(name);
+        return new TagCompound(name);
     case 11:
-        return *new TagIntArray(name);
+        return new TagIntArray(name);
     default:
-        throw InvalidTagId("Type ID too high!");
+        std::ostringstream ss;
+        ss << "Type ID too high: " << int(type) << '!';
+        throw InvalidTagId(ss.str());
     }
 }
 
-void writeTag(const Tag &tag, GZipOutputStream &out)
+void writeTag(const Tag &tag, OutputStream &out)
 {
     uint8_t type = tag.getType();
     out << type;
@@ -84,35 +104,50 @@ void writeTag(const Tag &tag, GZipOutputStream &out)
     }
 }
 
-Tag & readTag(GZipInputStream &in)
+Tag * readTag(InputStream &in)
 {
     uint8_t type;
     in >> type;
     if (type) {
         string name;
         in >> name;
-        Tag &tag = NBT::createTag(type, name);
-        in >> tag;
+        Tag *tag = NBT::createTag(type, name);
+        in >> *tag;
         return tag;
     }
-    return *new TagEnd();
+    return new TagEnd();
 }
 
-Tag & readFromFile(string filename)
+Tag * readFromFile(const string &filename)
 {
-    GZipInputStream stream(filename);
-//    BigEndianInputStream stream(gzStream);
-    Tag &tag = readTag(stream);
+    PlainInputStream test(filename, BIG);
+    short magic;
+    test >> magic;
+    test.close();
+    if (magic == GZIP_MAGIC) {
+        GZipInputStream stream(filename, BIG);
+        Tag *tag = readTag(stream);
+        stream.close();
+        return tag;
+    }
+    PlainInputStream stream(filename, BIG);
+    Tag *tag = readTag(stream);
     stream.close();
     return tag;
 }
 
-void writeToFile(Tag &tag, string filename)
+void writeToFile(const Tag &tag, const string &filename, bool compressed)
 {
-    GZipOutputStream stream(filename);
-//    BigEndianOutputStream stream(gzStream);
-    writeTag(tag, stream);
-    stream.close();
+    if (compressed) {
+        GZipOutputStream stream(filename, BIG);
+        writeTag(tag, stream);
+        stream.close();
+    }
+    else {
+        PlainOutputStream stream(filename, BIG);
+        writeTag(tag, stream);
+        stream.close();
+    }
 }
 
 }

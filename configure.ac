@@ -4,7 +4,7 @@
 AC_PREREQ([2.69])
 AC_INIT([libNBT], [1.0], [ZetaetaDaniel@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
-AC_CONFIG_SRCDIR([include/TagShort.hpp])
+AC_CONFIG_SRCDIR([src/TagShort.hpp])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_MACRO_DIR([m4])

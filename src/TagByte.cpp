@@ -1,9 +1,14 @@
 
+#include <IOStream/InputStream.hpp>
+#include <IOStream/OutputStream.hpp>
+
 #include "TagByte.hpp"
 
 namespace NBT {
 
 using std::string;
+using IOStream::InputStream;
+using IOStream::OutputStream;
 
 TagByte::TagByte(uint8_t b, string name)
     :Tag(name), data(b) {}
@@ -14,12 +19,12 @@ TagByte::TagByte(uint8_t b)
 TagByte::TagByte(string name)
     :Tag(name), data(0) {}
 
-void TagByte::write(GZipOutputStream &out) const
+void TagByte::write(OutputStream &out) const
 {
     out << data;
 }
 
-void TagByte::read(GZipInputStream &in)
+void TagByte::read(InputStream &in)
 {
     in >> data;
 }

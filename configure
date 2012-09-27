@@ -595,7 +595,7 @@ PACKAGE_STRING='libNBT 1.0'
 PACKAGE_BUGREPORT='ZetaetaDaniel@gmail.com'
 PACKAGE_URL=''
 
-ac_unique_file="include/TagShort.hpp"
+ac_unique_file="src/TagShort.hpp"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>

@@ -1,9 +1,14 @@
 
+#include <IOStream/InputStream.hpp>
+#include <IOStream/OutputStream.hpp>
+
 #include "TagShort.hpp"
 
 namespace NBT {
 
 using std::string;
+using IOStream::InputStream;
+using IOStream::OutputStream;
 
 TagShort::TagShort(short s, string name)
     :Tag(name), data(s) {}
@@ -14,12 +19,12 @@ TagShort::TagShort(short s)
 TagShort::TagShort(string name)
     :Tag(name), data(0) {}
 
-void TagShort::write(GZipOutputStream &out) const
+void TagShort::write(OutputStream &out) const
 {
     out << data;
 }
 
-void TagShort::read(GZipInputStream &in)
+void TagShort::read(InputStream &in)
 {
     in >> data;
 }

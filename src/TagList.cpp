@@ -1,4 +1,7 @@
 
+#include <IOStream/InputStream.hpp>
+#include <IOStream/OutputStream.hpp>
+
 #include "NBT.hpp"
 #include "TagList.hpp"
 
@@ -6,6 +9,8 @@ namespace NBT {
 
 using std::vector;
 using std::string;
+using IOStream::InputStream;
+using IOStream::OutputStream;
 
 TagList::TagList(const vector<Tag *> &v, const string &name)
     :Tag(name), data(v) {}
@@ -16,7 +21,7 @@ TagList::TagList(const vector<Tag *> &v)
 TagList::TagList(string name)
     :Tag(name) {}
 
-void TagList::write(GZipOutputStream &out) const
+void TagList::write(OutputStream &out) const
 {
     uint8_t type;
     if (data.size() == 0) {
@@ -33,16 +38,16 @@ void TagList::write(GZipOutputStream &out) const
     }
 }
 
-void TagList::read(GZipInputStream &in)
+void TagList::read(InputStream &in)
 {
     in >> type;
     int size;
     in >> size;
     data = vector<Tag *>(size);
     for (int i=0; i<size; ++i) {
-        Tag &tag = NBT::createTag(type);
-        in >> tag;
-        data.push_back(&tag);
+        Tag *tag = NBT::createTag(type);
+        in >> *tag;
+        data.push_back(tag);
     }
 }
 

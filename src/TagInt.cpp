@@ -1,9 +1,14 @@
 
+#include <IOStream/InputStream.hpp>
+#include <IOStream/OutputStream.hpp>
+
 #include "TagInt.hpp"
 
 namespace NBT {
 
 using std::string;
+using IOStream::InputStream;
+using IOStream::OutputStream;
 
 TagInt::TagInt(int i, string name)
 :Tag(name), data(i) {
@@ -19,11 +24,11 @@ TagInt::TagInt(const TagInt &other)
 :Tag(other), data(other.data) {
 }
 
-void TagInt::write(GZipOutputStream &out) const {
+void TagInt::write(OutputStream &out) const {
     out << data;
 }
 
-void TagInt::read(GZipInputStream &in) {
+void TagInt::read(InputStream &in) {
     in >> data;
 }
 

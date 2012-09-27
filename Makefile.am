@@ -6,17 +6,20 @@ lib_LTLIBRARIES = libNBT.la
 
 libNBT_la_includedir = $(includedir)/nbt
 
-libNBT_la_CXXFLAGS = -std=c++11 -I include/
+libNBT_la_CXXFLAGS = -fPIC -std=c++11 -I include
+#libNBT_la_LDFLAGS = 
 
-libNBT_la_SOURCES = src/GZipInputStream.cpp src/GZipOutputStream.cpp \
-     src/NBT.cpp src/TagByte.cpp src/TagShort.cpp src/TagInt.cpp \
+libNBT_la_LDFLAGS =  #-lz -Wl,-Bstatic,-lendian,-Bdynamic 
+libNBT_la_LIBADD = -lendian -lIOStream -lz
+
+libNBT_la_SOURCES = src/InvalidTagId.cpp src/TagNotFound.cpp \
+     src/NBT.cpp src/Tag.cpp src/TagByte.cpp src/TagShort.cpp src/TagInt.cpp \
      src/TagLong.cpp src/TagFloat.cpp src/TagDouble.cpp src/TagByteArray.cpp \
      src/TagString.cpp src/TagList.cpp src/TagCompound.cpp src/TagIntArray.cpp
 
-libNBT_la_include_HEADERS = include/GZipInputStream.hpp include/GZipOutputStream.hpp \
-    include/InputStream.hpp include/OutputStream.hpp include/Streams.hpp \
-    include/NBT.hpp include/NBTLib.hpp include/InvalidTagId.hpp \
-    include/Tags.hpp include/Tag.hpp include/TagByte.hpp include/TagShort.hpp \
-    include/TagInt.hpp include/TagLong.hpp include/TagFloat.hpp include/TagDouble.hpp \
-    include/TagByteArray.hpp include/TagString.hpp include/TagList.hpp \
-    include/TagCompound.hpp include/TagIntArray.hpp include/TagEnd.hpp
+libNBT_la_include_HEADERS = src/Streams.hpp \
+    src/NBT.hpp src/NBTLib.hpp src/InvalidTagId.hpp src/TagNotFound.hpp \
+    src/Tags.hpp src/Tag.hpp src/TagByte.hpp src/TagShort.hpp \
+    src/TagInt.hpp src/TagLong.hpp src/TagFloat.hpp src/TagDouble.hpp \
+    src/TagByteArray.hpp src/TagString.hpp src/TagList.hpp \
+    src/TagCompound.hpp src/TagIntArray.hpp src/TagEnd.hpp
