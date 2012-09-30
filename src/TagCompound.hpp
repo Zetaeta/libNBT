@@ -39,6 +39,24 @@ public:
     TagCompound & getCompound(const std::string &);
     std::vector<int> & getIntArray(const std::string &);
     std::vector<uint8_t> & getByteArray(const std::string &);
+
+    const Tag * get(const std::string &) const;
+    const int8_t getByte(const std::string &) const;
+    const uint8_t getUByte(const std::string &) const;
+    const short getShort(const std::string &) const;
+    const unsigned short getUShort(const std::string &) const;
+    const int getInt(const std::string &) const;
+    const unsigned int getUInt(const std::string &) const;
+    const int64_t getLong(const std::string &) const;
+    const uint64_t getULong(const std::string &) const;
+    const float getFloat(const std::string &) const;
+    const double getDouble(const std::string &) const;
+    const std::string getString(const std::string &) const;
+    const TagList & getList(const std::string &) const;
+    const TagCompound & getCompound(const std::string &) const;
+    const std::vector<int> & getIntArray(const std::string &) const;
+    const std::vector<uint8_t> & getByteArray(const std::string &) const;
+ 
     
     void set(const std::string &, Tag &);
     void set(const std::string &, Tag *);

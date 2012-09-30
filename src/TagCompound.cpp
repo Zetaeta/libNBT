@@ -251,6 +251,214 @@ vector<uint8_t> & TagCompound::getByteArray(const std::string &name) {
     throw TagNotFound(name);
 }
 
+const Tag * TagCompound::get(const string &name) const {
+    map<string, Tag *>::const_iterator it = data.find(name);
+    if (it != data.end()) {
+        return it->second;
+    }
+    else {
+        return 0;
+    }
+}
+
+const int8_t TagCompound::getByte(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagByte *tb;
+    if (tb = dynamic_cast<const TagByte *>(tag)) {
+        return tb->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const uint8_t TagCompound::getUByte(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagByte *tb;
+    if (tb = dynamic_cast<const TagByte *>(tag)) {
+        return tb->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const short TagCompound::getShort(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagShort *ts;
+    if (ts = dynamic_cast<const TagShort *>(tag)) {
+        return ts->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const unsigned short TagCompound::getUShort(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagShort *ts;
+    if (ts = dynamic_cast<const TagShort *>(tag)) {
+        return ts->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const int TagCompound::getInt(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagInt *ti;
+    if (ti = dynamic_cast<const TagInt *>(tag)) {
+        return ti->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const unsigned int TagCompound::getUInt(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagInt *ti;
+    if (ti = dynamic_cast<const TagInt *>(tag)) {
+        return ti->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const int64_t TagCompound::getLong(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagLong *tl;
+    if (tl = dynamic_cast<const TagLong *>(tag)) {
+        return tl->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const uint64_t TagCompound::getULong(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagLong *tl;
+    if (tl = dynamic_cast<const TagLong *>(tag)) {
+        return tl->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const float TagCompound::getFloat(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagFloat *tf;
+    if (tf = dynamic_cast<const TagFloat *>(tag)) {
+        return tf->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const double TagCompound::getDouble(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagDouble *td;
+    if (td = dynamic_cast<const TagDouble *>(tag)) {
+        return td->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const string TagCompound::getString(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagString *ts;
+    if (ts = dynamic_cast<const TagString *>(tag)) {
+        return ts->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const TagList & TagCompound::getList(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagList *tl;
+    if (tl = dynamic_cast<const TagList *>(tag)) {
+        return *tl;
+    }
+    throw TagNotFound(name);
+}
+
+const TagCompound & TagCompound::getCompound(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+    const TagCompound *ts;
+    if (ts = dynamic_cast<const TagCompound *>(tag)) {
+        return *ts;
+    }
+    throw TagNotFound(name);
+}
+
+const vector<int> & TagCompound::getIntArray(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagIntArray *tia;
+    if (tia = dynamic_cast<const TagIntArray *>(tag)) {
+        return tia->getData();
+    }
+    throw TagNotFound(name);
+}
+
+const vector<uint8_t> & TagCompound::getByteArray(const std::string &name) const {
+    const Tag *tag = get(name);
+    if (!tag) {
+        throw TagNotFound(name);
+    }
+
+    const TagByteArray *tba;
+    if (tba = dynamic_cast<const TagByteArray *>(tag)) {
+        return tba->getData();
+    }
+    throw TagNotFound(name);
+}
+
 
 void TagCompound::set(const string &name, Tag &value) {
     value.setName(name);

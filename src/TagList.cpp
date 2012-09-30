@@ -43,7 +43,7 @@ void TagList::read(InputStream &in)
     in >> type;
     int size;
     in >> size;
-    data = vector<Tag *>(size);
+    data = vector<Tag *>();
     for (int i=0; i<size; ++i) {
         Tag *tag = NBT::createTag(type);
         in >> *tag;
