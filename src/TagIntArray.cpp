@@ -23,7 +23,7 @@ TagIntArray::TagIntArray(const vector<int> &b)
 void TagIntArray::write(OutputStream &out) const
 {
     out << int(data.size());
-    for (int i=0; i<data.size(); ++i) {
+    for (size_t i=0; i<data.size(); ++i) {
         out << data[i];
     }
 }

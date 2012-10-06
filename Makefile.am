@@ -6,7 +6,7 @@ lib_LTLIBRARIES = libNBT.la
 
 libNBT_la_includedir = $(includedir)/nbt
 
-libNBT_la_CXXFLAGS = -fPIC -std=c++11 -I include
+libNBT_la_CXXFLAGS = -g -fPIC -std=c++11 -Wall
 #libNBT_la_LDFLAGS = 
 
 libNBT_la_LDFLAGS =  #-lz -Wl,-Bstatic,-lendian,-Bdynamic 

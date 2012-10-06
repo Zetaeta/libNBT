@@ -5,8 +5,8 @@
 #include <IOStream/OutputStream.hpp>
 #include <IOStream/GZipInputStream.hpp>
 #include <IOStream/GZipOutputStream.hpp>
-#include <IOStream/PlainInputStream.hpp>
-#include <IOStream/PlainOutputStream.hpp>
+#include <IOStream/FileInputStream.hpp>
+#include <IOStream/FileOutputStream.hpp>
 
 #include "Tags.hpp"
 #include "InvalidTagId.hpp"
@@ -18,14 +18,13 @@ namespace NBT {
 using std::string;
 using IOStream::InputStream;
 using IOStream::OutputStream;
-using IOStream::PlainInputStream;
-using IOStream::PlainOutputStream;
+using IOStream::FileInputStream;
+using IOStream::FileOutputStream;
 using IOStream::GZipInputStream;
 using IOStream::GZipOutputStream;
 using IOStream::BIG;
 
-Tag * createTag(uint8_t type)
-{
+Tag * createTag(uint8_t type) {
     switch (type)
     {
     case 0:
@@ -118,19 +117,18 @@ Tag * readTag(InputStream &in)
     return new TagEnd();
 }
 
-Tag * readFromFile(const string &filename)
-{
-    PlainInputStream test(filename, BIG);
-    short magic;
-    test >> magic;
+Tag * readFromFile(const string &filename) {
+    FileInputStream *fin = new FileInputStream(filename);
+    InputStream test(fin, BIG);
+    unsigned short magic = test.readUShort();
     test.close();
     if (magic == GZIP_MAGIC) {
-        GZipInputStream stream(filename, BIG);
+        InputStream stream(new GZipInputStream(new FileInputStream(filename)), BIG);
         Tag *tag = readTag(stream);
         stream.close();
         return tag;
     }
-    PlainInputStream stream(filename, BIG);
+    InputStream stream(new FileInputStream(filename), BIG);
     Tag *tag = readTag(stream);
     stream.close();
     return tag;
@@ -139,12 +137,12 @@ Tag * readFromFile(const string &filename)
 void writeToFile(const Tag &tag, const string &filename, bool compressed)
 {
     if (compressed) {
-        GZipOutputStream stream(filename, BIG);
+        OutputStream stream(new GZipOutputStream(filename), BIG);
         writeTag(tag, stream);
         stream.close();
     }
     else {
-        PlainOutputStream stream(filename, BIG);
+        OutputStream stream(new FileOutputStream(filename), BIG);
         writeTag(tag, stream);
         stream.close();
     }
