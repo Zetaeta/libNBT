@@ -107,7 +107,7 @@ Tag * readTag(InputStream &in)
 {
     uint8_t type;
     in >> type;
-    if (type) {
+    if (type != 0) {
         string name;
         in >> name;
         Tag *tag = NBT::createTag(type, name);

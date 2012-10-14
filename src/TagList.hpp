@@ -24,8 +24,10 @@ public:
     void addAll(const std::vector<Tag *> &);
     void removeAll(const std::vector<Tag *> &);
 
+    Tag * operator[](size_t);
+    const Tag * operator[](size_t) const;
     std::vector<Tag *> & getData();
-    std::vector<Tag *> getData() const;
+    const std::vector<Tag *> & getData() const;
     void setData(const std::vector<Tag *> &);
     int getType() const {
         return 9;

@@ -11,31 +11,27 @@ using IOStream::InputStream;
 using IOStream::OutputStream;
 
 TagShort::TagShort(short s, string name)
-    :Tag(name), data(s) {}
+:Tag(name), data(s) {}
 
 TagShort::TagShort(short s)
-    :data(s) {}
+:data(s) {}
 
 TagShort::TagShort(string name)
-    :Tag(name), data(0) {}
+:Tag(name), data(0) {}
 
-void TagShort::write(OutputStream &out) const
-{
+void TagShort::write(OutputStream &out) const {
     out << data;
 }
 
-void TagShort::read(InputStream &in)
-{
+void TagShort::read(InputStream &in) {
     in >> data;
 }
 
-short TagShort::getData() const
-{
+short TagShort::getData() const {
     return data;
 }
 
-void TagShort::setData(short s)
-{
+void TagShort::setData(short s) {
     data = s;
 }
 

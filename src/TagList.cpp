@@ -68,8 +68,7 @@ void TagList::addAll(const vector<Tag *> &vec)
     }
 }
 
-void TagList::remove(Tag &tag)
-{
+void TagList::remove(Tag &tag) {
     for (vector<Tag *>::iterator it = data.begin(); it != data.end(); ++it) {
         if (*it == &tag) {
             data.erase(it);
@@ -77,29 +76,29 @@ void TagList::remove(Tag &tag)
     }
 }
 
-void TagList::removeAll(const vector<Tag *> &vec)
-{
+void TagList::removeAll(const vector<Tag *> &vec) {
     for (vector<Tag *>::const_iterator it = vec.begin(); it != vec.end(); ++it) {
         remove(**it);
     }
 }
 
-vector<Tag *> & TagList::getData()
-{
+Tag * TagList::operator[](size_t index) {
+    return data[index];
+}
+
+const Tag * TagList::operator[](size_t index) const {
+    return data[index];
+}
+
+vector<Tag *> & TagList::getData() {
     return data;
 }
 
-vector<Tag *> TagList::getData() const
-{
-    vector<Tag *> tags;
-    for (vector<Tag *>::const_iterator it = data.begin(); it != data.end(); ++it) {
-        tags.push_back(*it);
-    }
-    return tags;
+const vector<Tag *> & TagList::getData() const {
+    return data;
 }
 
-void TagList::setData(const vector<Tag *> &data)
-{
+void TagList::setData(const vector<Tag *> &data) {
     this->data = data;
 }
 
