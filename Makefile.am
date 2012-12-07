@@ -5,10 +5,10 @@ lib_LTLIBRARIES = libNBT.la
 
 libNBT_la_includedir = $(includedir)/nbt
 
-libNBT_la_CXXFLAGS = -g -fPIC -std=c++11 -Wall -pg
+libNBT_la_CXXFLAGS = -g -fPIC -std=c++11 -Wall
 
-libNBT_la_LDFLAGS = -pg
-libNBT_la_LIBADD = -lendian -lIOStream -lz
+libNBT_la_LDFLAGS =
+libNBT_la_LIBADD = -lZUtil -lIOStream -lz
 
 libNBT_la_SOURCES = src/InvalidTagId.cpp src/TagNotFound.cpp \
      src/NBT.cpp src/Tag.cpp src/TagByte.cpp src/TagShort.cpp src/TagInt.cpp \
