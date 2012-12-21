@@ -3,9 +3,12 @@ ACLOCAL_AMFLAGS = -I m4
 
 lib_LTLIBRARIES = libNBT.la
 
+CXXFLAGS=
+AM_CXXFLAGS=
+
 libNBT_la_includedir = $(includedir)/nbt
 
-libNBT_la_CXXFLAGS = -g -fPIC -std=c++11 -Wall
+libNBT_la_CXXFLAGS = -O0 -g -fPIC -std=c++11 -Wall
 
 libNBT_la_LDFLAGS =
 libNBT_la_LIBADD = -lZUtil -lIOStream -lz

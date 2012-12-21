@@ -21,6 +21,7 @@ public:
     int getType() const {
         return 3;
     }
+    TagInt * clone() const;
 protected:
     int data;
 };

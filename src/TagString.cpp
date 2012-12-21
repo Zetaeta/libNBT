@@ -32,5 +32,9 @@ void TagString::setData(string s) {
     data = s;
 }
 
+TagString * TagString::clone() const {
+    return new TagString(data, name);
+}
+
 }
 

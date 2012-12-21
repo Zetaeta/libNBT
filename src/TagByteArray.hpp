@@ -15,6 +15,7 @@ public:
     TagByteArray(std::vector<uint8_t>, std::string);
     TagByteArray(std::vector<uint8_t>);
     TagByteArray(std::string);
+    TagByteArray(uint8_t *, size_t, std::string = "");
     void write(IOStream::OutputStream &) const;
     void read(IOStream::InputStream &);
     std::vector<uint8_t> & getData();
@@ -24,6 +25,7 @@ public:
     int getType() const {
         return 7;
     }
+    TagByteArray * clone() const;
 protected:
     std::vector<uint8_t> data;
 };

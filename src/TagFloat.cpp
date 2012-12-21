@@ -39,5 +39,9 @@ void TagFloat::setData(float f)
     data = f;
 }
 
+TagFloat * TagFloat::clone() const {
+    return new TagFloat(data, name);
+}
+
 }
 

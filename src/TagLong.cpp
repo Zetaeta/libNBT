@@ -39,5 +39,9 @@ void TagLong::setData(int64_t l)
     data = l;
 }
 
+TagLong * TagLong::clone() const {
+    return new TagLong(data, name);
+}
+
 }
 

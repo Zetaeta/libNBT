@@ -20,6 +20,7 @@ public:
     int getType() const {
         return 4;
     }
+    TagLong * clone() const;
 protected:
     int64_t data;
 };

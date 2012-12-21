@@ -16,6 +16,9 @@ public:
     int getType() const {
         return 0;
     }
+    TagEnd * clone() const {
+        return new TagEnd;
+    }
 };
 
 }

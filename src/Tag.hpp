@@ -20,6 +20,13 @@ public:
     virtual std::string getName() const;
     virtual void setName(std::string);
     virtual int getType() const = 0;
+
+    /**
+     * Returns a copy of the tag, for purposes of virtual copying,
+     * e.g. TagCompound::set(const Tag &)
+     * Returned pointer must be deleted.
+     */
+    virtual Tag * clone() const = 0;
 protected:
     std::string name;
 };

@@ -20,6 +20,8 @@ public:
     int getType() const {
         return 2;
     }
+
+    TagShort * clone() const;
 protected:
     short data;
 };

@@ -20,6 +20,8 @@ public:
     int getType() const {
         return 1;
     }
+
+    TagByte * clone() const;
 protected:
     uint8_t data;
 };

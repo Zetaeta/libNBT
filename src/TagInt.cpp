@@ -40,5 +40,9 @@ void TagInt::setData(int i) {
     data = i;
 }
 
+TagInt * TagInt::clone() const {
+    return new TagInt(data, name);
+}
+
 }
 

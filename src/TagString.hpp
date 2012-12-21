@@ -19,6 +19,7 @@ public:
     int getType() const {
         return 8;
     }
+    TagString * clone() const;
 protected:
     std::string data;
 };

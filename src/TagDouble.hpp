@@ -20,6 +20,7 @@ public:
     int getType() const {
         return 6;
     }
+    TagDouble * clone() const;
 protected:
     double data;
 };

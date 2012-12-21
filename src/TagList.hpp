@@ -3,37 +3,41 @@
 #define TAGLIST_HPP
 
 #include <vector>
+#include <memory>
 
 #include "Tag.hpp"
 
 namespace NBT {
 
+using std::shared_ptr;
+
 class TagList : public Tag
 {
 public:
-    TagList() {}
+    TagList();
     TagList(std::string);
-    TagList(const std::vector<Tag *> &);
-    TagList(const std::vector<Tag *> &, const std::string &);
+    TagList(const std::vector<shared_ptr<Tag>> &);
+    TagList(const std::vector<shared_ptr<Tag>> &, const std::string &);
     void write(IOStream::OutputStream &) const;
     void read(IOStream::InputStream &);
     size_t size() const;
 
-    void add(Tag &);
-    void remove(Tag &);
-    void addAll(const std::vector<Tag *> &);
-    void removeAll(const std::vector<Tag *> &);
+    void add(const shared_ptr<Tag> &);
+    void remove(const shared_ptr<Tag> &);
+    void addAll(const std::vector<shared_ptr<Tag>> &);
+    void removeAll(const std::vector<shared_ptr<Tag>> &);
 
-    Tag * operator[](size_t);
-    const Tag * operator[](size_t) const;
-    std::vector<Tag *> & getData();
-    const std::vector<Tag *> & getData() const;
-    void setData(const std::vector<Tag *> &);
+    shared_ptr<Tag> operator[](size_t);
+    const shared_ptr<Tag> operator[](size_t) const;
+    std::vector<shared_ptr<Tag>> & getData();
+    const std::vector<shared_ptr<Tag>> & getData() const;
+    void setData(const std::vector<shared_ptr<Tag>> &);
     int getType() const {
         return 9;
     }
+    TagList * clone() const;
 protected:
-    std::vector<Tag *> data;
+    std::vector<shared_ptr<Tag>> data;
     uint8_t type;
 };
 

@@ -1,5 +1,8 @@
 
 #include <sstream>
+#include <memory>
+#include <vector>
+#include <iostream>
 
 #include <IOStream/InputStream.hpp>
 #include <IOStream/OutputStream.hpp>
@@ -7,6 +10,8 @@
 #include <IOStream/GZipOutputStream.hpp>
 #include <IOStream/FileInputStream.hpp>
 #include <IOStream/FileOutputStream.hpp>
+
+#include <Util/Throw.hpp>
 
 #include "Tags.hpp"
 #include "InvalidTagId.hpp"
@@ -16,6 +21,9 @@
 namespace NBT {
 
 using std::string;
+using std::shared_ptr;
+using std::make_shared;
+using std::cout;
 using IOStream::InputStream;
 using IOStream::OutputStream;
 using IOStream::FileInputStream;
@@ -24,33 +32,57 @@ using IOStream::GZipInputStream;
 using IOStream::GZipOutputStream;
 using IOStream::BIG;
 
-Tag * createTag(uint8_t type) {
+const std::string tagTypeNames[12] = {
+    "TagEnd",
+    "TagByte",
+    "TagShort",
+    "TagInt",
+    "TagLong",
+    "TagFloat",
+    "TagDouble",
+    "TagByteArray",
+    "TagString",
+    "TagList",
+    "TagCompound",
+    "TagIntArray"
+};
+
+const std::string & tagTypeName(uint8_t type) {
+    if (type > 11) {
+        std::ostringstream oss;
+        oss << uint16_t(type);
+        throwSpecific(InvalidTagId, oss.str());
+    }
+    return tagTypeNames[type];
+}
+
+shared_ptr<Tag> createTag(uint8_t type) {
     switch (type)
     {
     case 0:
-        return new TagEnd();
+        return make_shared<TagEnd>();
     case 1:
-        return new TagByte();
+        return make_shared<TagByte>();
     case 2:
-        return new TagShort();
+        return make_shared<TagShort>();
     case 3:
-        return new TagInt();
+        return make_shared<TagInt>();
     case 4:
-        return new TagLong();
+        return make_shared<TagLong>();
     case 5:
-        return new TagFloat();
+        return make_shared<TagFloat>();
     case 6:
-        return new TagDouble();
+        return make_shared<TagDouble>();
     case 7:
-        return new TagByteArray();
+        return make_shared<TagByteArray>();
     case 8:
-        return new TagString();
+        return make_shared<TagString>();
     case 9:
-        return new TagList();
+        return make_shared<TagList>();
     case 10:
-        return new TagCompound();
+        return make_shared<TagCompound>();
     case 11:
-        return new TagIntArray();
+        return make_shared<TagIntArray>();
     default:
         std::ostringstream ss;
         ss << "Type ID too high: " << int(type) << '!';
@@ -58,34 +90,34 @@ Tag * createTag(uint8_t type) {
     }
 }
 
-Tag * createTag(uint8_t type, string name)
+shared_ptr<Tag> createTag(uint8_t type, string name)
 {
     switch (type)
     {
     case 0:
-        return new TagEnd();
+        return make_shared<TagEnd>();
     case 1:
-        return new TagByte(name);
+        return make_shared<TagByte>(name);
     case 2:
-        return new TagShort(name);
+        return make_shared<TagShort>(name);
     case 3:
-        return new TagInt(name);
+        return make_shared<TagInt>(name);
     case 4:
-        return new TagLong(name);
+        return make_shared<TagLong>(name);
     case 5:
-        return new TagFloat(name);
+        return make_shared<TagFloat>(name);
     case 6:
-        return new TagDouble(name);
+        return make_shared<TagDouble>(name);
     case 7:
-        return new TagByteArray(name);
+        return make_shared<TagByteArray>(name);
     case 8:
-        return new TagString(name);
+        return make_shared<TagString>(name);
     case 9:
-        return new TagList(name);
+        return make_shared<TagList>(name);
     case 10:
-        return new TagCompound(name);
+        return make_shared<TagCompound>(name);
     case 11:
-        return new TagIntArray(name);
+        return make_shared<TagIntArray>(name);
     default:
         std::ostringstream ss;
         ss << "Type ID too high: " << int(type) << '!';
@@ -96,6 +128,7 @@ Tag * createTag(uint8_t type, string name)
 void writeTag(const Tag &tag, OutputStream &out)
 {
     uint8_t type = tag.getType();
+//    cout << "NBT::writeTag(): writing tag " << tag.getName() << " of type " << tagTypeName(tag.getType()) << '\n';
     out << type;
     if (type) {
         out << tag.getName();
@@ -103,33 +136,34 @@ void writeTag(const Tag &tag, OutputStream &out)
     }
 }
 
-Tag * readTag(InputStream &in)
+shared_ptr<Tag> readTag(InputStream &in)
 {
     uint8_t type;
     in >> type;
     if (type != 0) {
         string name;
         in >> name;
-        Tag *tag = NBT::createTag(type, name);
+//        std::cout << "NBT::readTag(): name = " << name << ", type = " << tagTypeName(type) << '\n';
+        shared_ptr<Tag> tag = NBT::createTag(type, name);
         in >> *tag;
         return tag;
     }
-    return new TagEnd();
+    return make_shared<TagEnd>();
 }
 
-Tag * readFromFile(const string &filename) {
+shared_ptr<Tag> readFromFile(const string &filename) {
     FileInputStream *fin = new FileInputStream(filename);
     InputStream test(fin, BIG);
     unsigned short magic = test.readUShort();
     test.close();
     if (magic == GZIP_MAGIC) {
         InputStream stream(new GZipInputStream(new FileInputStream(filename)), BIG);
-        Tag *tag = readTag(stream);
+        shared_ptr<Tag> tag = readTag(stream);
         stream.close();
         return tag;
     }
     InputStream stream(new FileInputStream(filename), BIG);
-    Tag *tag = readTag(stream);
+    shared_ptr<Tag> tag = readTag(stream);
     stream.close();
     return tag;
 }

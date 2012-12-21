@@ -20,6 +20,7 @@ public:
     int getType() const {
         return 5;
     }
+    TagFloat * clone() const;
 protected:
     float data;
 };

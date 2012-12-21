@@ -58,5 +58,9 @@ size_t TagIntArray::size() const
     return data.size();
 }
 
+TagIntArray * TagIntArray::clone() const {
+    return new TagIntArray(data, name);
+}
+
 }
 

@@ -1,4 +1,7 @@
 
+#include <memory>
+#include <vector>
+
 #include <IOStream/InputStream.hpp>
 #include <IOStream/OutputStream.hpp>
 
@@ -12,10 +15,13 @@ using std::string;
 using IOStream::InputStream;
 using IOStream::OutputStream;
 
-TagList::TagList(const vector<Tag *> &v, const string &name)
+TagList::TagList() {
+}
+
+TagList::TagList(const vector<shared_ptr<Tag>> &v, const string &name)
     :Tag(name), data(v) {}
 
-TagList::TagList(const vector<Tag *> &v)
+TagList::TagList(const vector<shared_ptr<Tag>> &v)
     :data(v) {}
 
 TagList::TagList(string name)
@@ -43,9 +49,9 @@ void TagList::read(InputStream &in)
     in >> type;
     int size;
     in >> size;
-    data = vector<Tag *>(size);
+    data = vector<shared_ptr<Tag>>(size);
     for (int i=0; i<size; ++i) {
-        Tag *tag = NBT::createTag(type);
+        shared_ptr<Tag> tag = NBT::createTag(type);
         in >> *tag;
         data[i] = tag;
     }
@@ -56,49 +62,49 @@ size_t TagList::size() const
     return data.size();
 }
 
-void TagList::add(Tag &tag)
+void TagList::add(const shared_ptr<Tag> &tag)
 {
-    data.push_back(&tag);
+    data.push_back(tag);
 }
 
-void TagList::addAll(const vector<Tag *> &vec)
+void TagList::addAll(const vector<shared_ptr<Tag>> &vec)
 {
-    for (vector<Tag *>::const_iterator it = vec.begin(); it != vec.end(); ++it) {
+    for (vector<shared_ptr<Tag>>::const_iterator it = vec.begin(); it != vec.end(); ++it) {
         data.push_back(*it);
     }
 }
 
-void TagList::remove(Tag &tag) {
-    for (vector<Tag *>::iterator it = data.begin(); it != data.end(); ++it) {
-        if (*it == &tag) {
+void TagList::remove(const shared_ptr<Tag> &tag) {
+    for (vector<shared_ptr<Tag>>::iterator it = data.begin(); it != data.end(); ++it) {
+        if (*it == tag) {
             data.erase(it);
         }
     }
 }
 
-void TagList::removeAll(const vector<Tag *> &vec) {
-    for (vector<Tag *>::const_iterator it = vec.begin(); it != vec.end(); ++it) {
-        remove(**it);
+void TagList::removeAll(const vector<shared_ptr<Tag>> &vec) {
+    for (vector<shared_ptr<Tag>>::const_iterator it = vec.begin(); it != vec.end(); ++it) {
+        remove(*it);
     }
 }
 
-Tag * TagList::operator[](size_t index) {
+shared_ptr<Tag> TagList::operator[](size_t index) {
     return data[index];
 }
 
-const Tag * TagList::operator[](size_t index) const {
+const shared_ptr<Tag> TagList::operator[](size_t index) const {
     return data[index];
 }
 
-vector<Tag *> & TagList::getData() {
+vector<shared_ptr<Tag>> & TagList::getData() {
     return data;
 }
 
-const vector<Tag *> & TagList::getData() const {
+const vector<shared_ptr<Tag>> & TagList::getData() const {
     return data;
 }
 
-void TagList::setData(const vector<Tag *> &data) {
+void TagList::setData(const vector<shared_ptr<Tag>> &data) {
     this->data = data;
 }
 
@@ -111,6 +117,10 @@ void TagList::setData(const vector<Tag *> &data)
     }
 }
 */
+
+TagList * TagList::clone() const {
+    return new TagList(data, name);
+}
 
 }
 

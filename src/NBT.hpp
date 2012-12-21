@@ -5,6 +5,8 @@
 #include <string>
 #include <stdint.h>
 
+#include <Util/stlfwd.hpp>
+
 namespace IOStream {
 class OutputStream;
 class InputStream;
@@ -12,14 +14,16 @@ class InputStream;
 
 namespace NBT {
 
+using std::shared_ptr;
+
 class Tag;
 
-Tag * createTag(uint8_t);
-Tag * createTag(uint8_t, std::string);
+shared_ptr<Tag> createTag(uint8_t);
+shared_ptr<Tag> createTag(uint8_t, std::string);
 void writeTag(const Tag &, IOStream::OutputStream &);
-Tag * readTag(IOStream::InputStream &);
+shared_ptr<Tag> readTag(IOStream::InputStream &);
 void writeToFile(const Tag &tag, const std::string &);
-Tag *readFromFile(const std::string &);
+shared_ptr<Tag>readFromFile(const std::string &);
 
 }
 

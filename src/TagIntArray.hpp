@@ -24,6 +24,7 @@ public:
     int getType() const {
         return 11;
     }
+    TagIntArray * clone() const;
 protected:
     std::vector<int> data;
 };

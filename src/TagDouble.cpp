@@ -35,5 +35,9 @@ void TagDouble::setData(double d) {
     data = d;
 }
 
+TagDouble * TagDouble::clone() const {
+    return new TagDouble(data, name);
+}
+
 }
 

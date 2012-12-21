@@ -35,5 +35,9 @@ void TagShort::setData(short s) {
     data = s;
 }
 
+TagShort * TagShort::clone() const {
+    return new TagShort(data, name);
+}
+
 }
 

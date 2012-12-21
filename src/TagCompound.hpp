@@ -6,94 +6,102 @@
 #include <vector>
 #include <string>
 
+#include <Util/stlfwd.hpp>
+
 #include "Tag.hpp"
 
 namespace NBT {
 
 class TagList;
 
+using std::shared_ptr;
+using std::vector;
+using std::map;
+using std::string;
+
 class TagCompound : public Tag
 {
 public:
     TagCompound() {}
-    TagCompound(std::map<std::string, Tag *>, std::string);
-    TagCompound(std::string);
-    TagCompound(std::map<std::string, Tag *>);
+    TagCompound(const map<string, shared_ptr<Tag>> &, const string &);
+    TagCompound(const string &);
+    TagCompound(const map<string, shared_ptr<Tag>> &);
     ~TagCompound();
     void write(IOStream::OutputStream &) const;
     void read(IOStream::InputStream &);
 
-    Tag * get(const std::string &);
-    int8_t getByte(const std::string &);
-    uint8_t getUByte(const std::string &);
-    short getShort(const std::string &);
-    unsigned short getUShort(const std::string &);
-    int getInt(const std::string &);
-    unsigned int getUInt(const std::string &);
-    int64_t getLong(const std::string &);
-    uint64_t getULong(const std::string &);
-    float getFloat(const std::string &);
-    double getDouble(const std::string &);
-    std::string getString(const std::string &);
-    TagList & getList(const std::string &);
-    TagCompound & getCompound(const std::string &);
-    std::vector<int> & getIntArray(const std::string &);
-    std::vector<uint8_t> & getByteArray(const std::string &);
+    const shared_ptr<Tag> & get(const string &);
+    int8_t getByte(const string &);
+    uint8_t getUByte(const string &);
+    short getShort(const string &);
+    unsigned short getUShort(const string &);
+    int getInt(const string &);
+    unsigned int getUInt(const string &);
+    int64_t getLong(const string &);
+    uint64_t getULong(const string &);
+    float getFloat(const string &);
+    double getDouble(const string &);
+    string getString(const string &);
+    shared_ptr<TagList> getList(const string &);
+    shared_ptr<TagCompound> getCompound(const string &);
+    vector<int> & getIntArray(const string &);
+    vector<uint8_t> & getByteArray(const string &);
 
-    const Tag * get(const std::string &) const;
-    const int8_t getByte(const std::string &) const;
-    const uint8_t getUByte(const std::string &) const;
-    const short getShort(const std::string &) const;
-    const unsigned short getUShort(const std::string &) const;
-    const int getInt(const std::string &) const;
-    const unsigned int getUInt(const std::string &) const;
-    const int64_t getLong(const std::string &) const;
-    const uint64_t getULong(const std::string &) const;
-    const float getFloat(const std::string &) const;
-    const double getDouble(const std::string &) const;
-    const std::string getString(const std::string &) const;
-    const TagList & getList(const std::string &) const;
-    const TagCompound & getCompound(const std::string &) const;
-    const std::vector<int> & getIntArray(const std::string &) const;
-    const std::vector<uint8_t> & getByteArray(const std::string &) const;
+    const shared_ptr<Tag> get(const string &) const;
+    const int8_t getByte(const string &) const;
+    const uint8_t getUByte(const string &) const;
+    const short getShort(const string &) const;
+    const unsigned short getUShort(const string &) const;
+    const int getInt(const string &) const;
+    const unsigned int getUInt(const string &) const;
+    const int64_t getLong(const string &) const;
+    const uint64_t getULong(const string &) const;
+    const float getFloat(const string &) const;
+    const double getDouble(const string &) const;
+    const string getString(const string &) const;
+    shared_ptr<TagList> getList(const string &) const;
+    shared_ptr<TagCompound> getCompound(const string &) const;
+    const vector<int> & getIntArray(const string &) const;
+    const vector<uint8_t> & getByteArray(const string &) const;
  
     
-    void set(const std::string &, Tag &);
-    void set(const std::string &, Tag *);
+    void set(const string &, const shared_ptr<Tag> &);
+    void set(const string &, const Tag &);
 
-    void set(Tag &);
-    void set(Tag *);
+    void set(const shared_ptr<Tag> &);
+    void set(const Tag &);
 
-    void set(const std::string &, uint8_t);
-    void set(const std::string &, int8_t);
-    void set(const std::string &, short);
-    void set(const std::string &, unsigned short);
-    void set(const std::string &, int);
-    void set(const std::string &, unsigned int);
-    void set(const std::string &, int64_t);
-    void set(const std::string &, uint64_t);
-    void set(const std::string &, float);
-    void set(const std::string &, double);
-    void set(const std::string &, const std::vector<uint8_t> &);
-    void set(const std::string &, const std::string &);
-    void set(const std::string &, const std::vector<int> &);
-    void set(const std::string &, const std::vector<Tag *> &);
-    void set(const std::string &, const std::map<std::string, Tag *> &);
-    void setAll(const std::map<std::string, Tag *> &);
+    void set(const string &, uint8_t);
+    void set(const string &, int8_t);
+    void set(const string &, short);
+    void set(const string &, unsigned short);
+    void set(const string &, int);
+    void set(const string &, unsigned int);
+    void set(const string &, int64_t);
+    void set(const string &, uint64_t);
+    void set(const string &, float);
+    void set(const string &, double);
+    void set(const string &, const vector<uint8_t> &);
+    void set(const string &, const string &);
+    void set(const string &, const vector<int> &);
+    void set(const string &, const vector<shared_ptr<Tag>> &);
+    void set(const string &, const map<string, shared_ptr<Tag>> &);
+    void setAll(const map<string, shared_ptr<Tag>> &);
 
     size_t size() const;
 
     int getType() const {
         return 10;
     }
-    std::string toString() const;
-    std::map<std::string, Tag *> & getData();
-    void setData(std::map<std::string, Tag *>);
-    const std::map<std::string, Tag *> & getData() const;
+    string toString() const;
+    map<string, shared_ptr<Tag>> & getData();
+    void setData(map<string, shared_ptr<Tag>>);
+    const map<string, shared_ptr<Tag>> & getData() const;
 
-    std::vector<Tag *> getChildren();
+    vector<shared_ptr<Tag>> getChildren();
+    TagCompound * clone() const;
 protected:
-    std::map<std::string, Tag *> data;
+    map<string, shared_ptr<Tag>> data;
 };
 
 }

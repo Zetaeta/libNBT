@@ -1,4 +1,6 @@
 
+#include <string.h>
+
 #include <IOStream/InputStream.hpp>
 #include <IOStream/OutputStream.hpp>
 
@@ -20,14 +22,19 @@ TagByteArray::TagByteArray(string name)
 TagByteArray::TagByteArray(vector<uint8_t> b)
     :data(b) {}
 
-void TagByteArray::write(OutputStream &out) const
-{
+TagByteArray::TagByteArray(uint8_t *array, size_t size, string name)
+:Tag(name), data(size) {
+    memcpy(&data[0], array, size);
+}
+
+void TagByteArray::write(OutputStream &out) const {
+    out.writeInt(data.size());
     out.write(data.data(), data.size());
 }
 
 void TagByteArray::read(InputStream &in)
 {
-    int size;
+    int size(0);
     in >> size;
 //    data = vector<uint8_t>();
     data.clear();
@@ -58,6 +65,10 @@ void TagByteArray::setData(vector<uint8_t> &v)
 size_t TagByteArray::size() const
 {
     return data.size();
+}
+
+TagByteArray * TagByteArray::clone() const {
+    return new TagByteArray(data, name);
 }
 
 }

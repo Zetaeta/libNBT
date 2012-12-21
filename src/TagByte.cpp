@@ -39,5 +39,9 @@ void TagByte::setData(uint8_t b)
     data = b;
 }
 
+TagByte * TagByte::clone() const {
+    return new TagByte(data, name);
+}
+
 }
 
